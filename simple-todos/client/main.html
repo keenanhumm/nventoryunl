@@ -59,6 +59,7 @@
                     <button type="button" class="logout btn btn-danger"><i class="glyphicon glyphicon-off"></i>  Logout</button>
                 </div>
                 <div class="col-md-3">
+                    <h4 style="color:gray">Welcome, {{userEmail}}</h4>
                 </div>
                 <div class="col-md-8 text-right">
                     <button type="button" class="adminTools btn btn-secondary"><i class="glyphicon glyphicon-cog"></i> Admin Tools</button>
@@ -111,6 +112,7 @@
                     <button type="button" class="logout btn btn-danger"><i class="glyphicon glyphicon-off"></i>  Logout</button>
                 </div>
                 <div class="col-md-3">
+                    <h4 style="color:gray">Welcome, {{userEmail}}</h4>
                 </div>
                 <div class="col-md-8 text-right">
                 </div>
@@ -263,7 +265,6 @@
         <div class="container-fluid animated fadeIn">
             <div class="row">
                 <button type="button" class="goHome btn btn-secondary"><i class="glyphicon glyphicon-home"></i> Go Home</button>
-                <button type="button" class="goProducts btn btn-secondary"><i class="glyphicon glyphicon-th"></i> Go to Products</button>
             </div>
             <div class="container-fluid" style="padding-top:30px;padding-bottom:30px;">
                 <h1>Update Stock</h1>
@@ -298,7 +299,6 @@
         <div class="container-fluid animated fadeIn">
             <div class="row">
                 <button type="button" class="goHome btn btn-secondary"><i class="glyphicon glyphicon-home"></i> Go Home</button>
-                <button type="button" class="goLabs btn btn-secondary"><i class="glyphicon glyphicon-education"></i> Go to Labs</button>
             </div>
             <div class="container-fluid" style="padding-top:30px;padding-bottom:30px;">
                 <h1>Edit Lab</h1>
@@ -398,7 +398,7 @@
 </template>
 
 <template name="adminTools ">
-    <div class="container-fluid animated fadeIn">
+    <div class="container-fluid animated fadeIn" style="padding-bottom:20px;">
         <div class="row">
             <div class="col-md-3">
                 <button type="button" class="goHome btn btn-secondary"><i class="glyphicon glyphicon-home"></i> Go Home</button>
@@ -411,232 +411,181 @@
 
             </div>
         </div>
-        <div class="row text-center animated pulse" style="padding-top: 30px;">
-            <div class="row" style="padding-top: 10px;">
-                <button type="button" class="productPage btn btn-lg btn-secondary"><i class="glyphicon glyphicon-th"></i> Products</button>
-            </div>
+    </div>
 
-            <div class="row" style="padding-top: 10px;">
-                <button type="button" class="labPage btn btn-lg btn-secondary"><i class="glyphicon glyphicon-education"></i> Labs</button>
-            </div>
+    <!--//Tab implementation-->
 
-            <div class="row" style="padding-top: 10px;">
-                <button type="button" class="checkoutPage btn btn-lg btn-secondary"><i class="glyphicon glyphicon-shopping-cart"></i> Checkouts</button>
-            </div>
-            <div class="row" style="padding-top: 10px;">
-                <button type="button" class="users btn btn-lg btn-secondary"><i class="glyphicon glyphicon-user"></i> Users</button>
-            </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a style="color:dimgray" data-toggle="tab" href="#products"><i class="glyphicon glyphicon-th"></i> Products</a></li>
+        <li><a style="color:dimgray" data-toggle="tab" href="#labs"><i class="glyphicon glyphicon-education"></i> Labs</a></li>
+        <li><a style="color:dimgray" data-toggle="tab" href="#checkouts"><i class="glyphicon glyphicon-shopping-cart"></i> Checkouts</a></li>
+        <li><a style="color:dimgray" data-toggle="tab" href="#users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="products" class="tab-pane fade in active" style="padding-top:20px;" >
+            <form class="animated fadeIn">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-12">
+                            <button type="button" class="updateStock btn btn-warning"><i class="glyphicon glyphicon-pencil"></i> Update Stock</button>
+                            <button type="button" class="newProduct btn btn-success"><i class="glyphicon glyphicon-plus"></i> New Product</button>
+                            <button type="button" class="removeProduct btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Remove Product</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top:20px;" >
+                    <div class="container-fluid">
+                        <div class="container-fluid animated slideInUp">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Left In Stock</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{#each products}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>${{price}}</td>
+                                        <td>{{quantity}}</td>
+                                    </tr>
+                                {{else}}
+                                    <div class="wrapper-message">
+                                        <div class="title-message">Nventory is empty</div>
+                                        <div class="subtitle-message">Add new produts above</div>
+                                    </div>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="labs" class="tab-pane fade" style="padding-top:20px;" >
+            <form class="animated fadeIn">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-12">
+                            <button type="button" class="editLab btn btn-warning"><i class="glyphicon glyphicon-pencil"></i> Edit Lab</button>
+                            <button type="button" class="addLab btn btn-success"><i class="glyphicon glyphicon-plus"></i> Add New Lab</button>
+                            <button type="button" class="removeLab btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Remove Lab</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"  style="padding-top:20px;" >
+                    <div class="container-fluid">
+                        <div class="container-fluid animated slideInUp">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Lab Name</th>
+                                    <th>Room</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{#each labs}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>{{room}}</td>
+                                    </tr>
+                                {{else}}
+                                    <div class="wrapper-message">
+                                        <div class="title-message">No labs to list</div>
+                                    </div>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="checkouts" class="tab-pane fade" style="padding-top:20px;" >
+            <form class="animated fadeIn">
+                <div class="row">
+                    <div class="container-fluid">
+
+                        <div class="col-md-12">
+                            <button type="button" class="newCheckout btn btn-primary"><i class="glyphicon glyphicon-shopping-cart"></i> New Checkout</button>
+                            <button type="button" class="removeCheckout btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Remove Checkout</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"  style="padding-top:20px;" >
+                    <div class="container-fluid">
+                        <div class="container-fluid animated slideInUp">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Checkout Date</th>
+                                    <th>Customer</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{#each checkouts}}
+                                    <tr>
+                                        <td>{{date}}</td>
+                                        <td>{{customer}}</td>
+                                        <td>{{product}}</td>
+                                        <td>{{quantity}}</td>
+                                    </tr>
+                                {{else}}
+                                    <div class="wrapper-message">
+                                        <div class="title-message">No checkouts yet </div>
+                                    </div>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="users" class="tab-pane fade" style="padding-top:20px;" >
+            <form class="animated fadeIn">
+                <div class="row" style="padding-top:20px;" >
+                    <div class="container-fluid">
+                        <div class="container-fluid animated slideInUp">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Pin</th>
+                                    <th>Date Created</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{#each useraccounts}}
+                                    <tr>
+                                        <td>{{email}}</td>
+                                        <td>{{pin}}</td>
+                                        <td>{{date}}</td>
+                                    </tr>
+                                {{else}}
+                                    <div class="wrapper-message">
+                                        <div class="title-message">No users to list</div>
+                                    </div>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </template>
-
-<template name="users">
-    <form class="animated fadeIn">
-        <div class="row">
-            <div class="container-fluid">
-                <div class="col-md-1">
-                    <button type="button" class="goHome btn btn-secondary"><i class="glyphicon glyphicon-home"></i> Go Home</button>
-                </div>
-                <div class="col-md-3">
-                </div>
-                <div class="col-md-8 text-right">
-                </div>
-            </div>
-            <div class="container">
-                <h1>
-                    User Accounts
-                </h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="container-fluid">
-                <div class="container-fluid animated slideInUp">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Pin</th>
-                            <th>Date Created</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {{#each useraccounts}}
-                            <tr>
-                                <td>{{email}}</td>
-                                <td>{{pin}}</td>
-                                <td>{{date}}</td>
-                            </tr>
-                        {{else}}
-                            <div class="wrapper-message">
-                                <div class="title-message">No users to list</div>
-                            </div>
-                        {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </form>
-</template>
-
-<template name="labPage">
-    <form class="animated fadeIn">
-        <div class="row">
-            <div class="container-fluid">
-                <div class="col-md-1">
-                    <button type="button" class="goHome btn btn-secondary"><i class="glyphicon glyphicon-home"></i> Go Home</button>
-
-                </div>
-                <div class="col-md-3">
-                </div>
-                <div class="col-md-8 text-right">
-                    <button type="button" class="editLab btn btn-secondary"><i class="glyphicon glyphicon-pencil"></i> Edit Lab</button>
-                    <button type="button" class="addLab btn btn-secondary"><i class="glyphicon glyphicon-plus"></i> Add New Lab</button>
-                    <button type="button" class="removeLab btn btn-secondary"><i class="glyphicon glyphicon-remove"></i> Remove Lab</button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="container-fluid">
-                <div class="row text-center" style="padding-bottom: 30px; ">
-                    <img src="/nventorylabs.JPG" width="400" height="100">
-                </div>
-                <div class="container-fluid animated slideInUp">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Lab Name</th>
-                            <th>Room</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {{#each labs}}
-                            <tr>
-                                <td>{{name}}</td>
-                                <td>{{room}}</td>
-                            </tr>
-                        {{else}}
-                            <div class="wrapper-message">
-                                <div class="title-message">No labs to list</div>
-                            </div>
-                        {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </form>
-</template>
-
-
-<template name="productPage">
-    <form class="animated fadeIn">
-        <div class="row">
-            <div class="container-fluid">
-                <div class="col-md-1">
-                    <button type="button" class="goHome btn btn-secondary"><i class="glyphicon glyphicon-home"></i> Go Home</button>
-                </div>
-                <div class="col-md-3">
-                </div>
-                <div class="col-md-8 text-right">
-                    <button type="button" class="updateStock btn btn-secondary"><i class="glyphicon glyphicon-pencil"></i> Update Stock</button>
-                    <button type="button" class="newProduct btn btn-secondary"><i class="glyphicon glyphicon-plus"></i> New Product</button>
-                    <button type="button" class="removeProduct btn btn-secondary"><i class="glyphicon glyphicon-remove"></i> Remove Product</button>
-
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="container-fluid">
-                <div class="row text-center" style="padding-bottom: 30px; ">
-                    <img src="/nventoryproducts.JPG" width="400" height="100">
-                </div>
-                <div class="container-fluid animated slideInUp">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            <th>Left In Stock</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {{#each products}}
-                            <tr>
-                                <td>{{name}}</td>
-                                <td>${{price}}</td>
-                                <td>{{quantity}}</td>
-                            </tr>
-                        {{else}}
-                            <div class="wrapper-message">
-                                <div class="title-message">Nventory is empty</div>
-                                <div class="subtitle-message">Add new produts above</div>
-                            </div>
-                        {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </form>
-</template>
-
-<template name="checkoutPage">
-    <form class="animated fadeIn">
-        <div class="row">
-            <div class="container-fluid">
-                <div class="col-md-1">
-                    <button type="button" class="goHome btn btn-secondary"><i class="glyphicon glyphicon-home"></i> Go Home</button>
-                </div>
-                <div class="col-md-3">
-                </div>
-                <div class="col-md-8 text-right">
-                    <button type="button" class="newCheckout btn btn-primary"><i class="glyphicon glyphicon-shopping-cart"></i> New Checkout</button>
-                    <button type="button" class="removeCheckout btn btn-secondary"><i class="glyphicon glyphicon-remove"></i> Remove Checkout</button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="container-fluid">
-                <div class="row text-center" style="padding-bottom: 30px; ">
-                    <img src="/nventorycheckouts.JPG" width="400" height="100">
-                </div>
-                <div class="container-fluid animated slideInUp">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Checkout Date</th>
-                            <th>Customer</th>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {{#each checkouts}}
-                            <tr>
-                                <td>{{date}}</td>
-                                <td>{{customer}}</td>
-                                <td>{{product}}</td>
-                                <td>{{quantity}}</td>
-                            </tr>
-                        {{else}}
-                            <div class="wrapper-message">
-                                <div class="title-message">No checkouts yet </div>
-                            </div>
-                        {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </form>
-</template>
-
-
 
 
 <template name="removeCheckout">

@@ -4,6 +4,7 @@ import Products from '../collections/Products.js';
 import Labs from '../collections/Labs.js';
 import Checkouts from '../collections/Checkouts.js';
 import UserAccounts from '../collections/UserAccounts.js';
+import Admins from '../collections/Admins.js';
 
 
 import './main.html';
@@ -23,16 +24,23 @@ var isEmail = function(value){
 Template.register.events({
     'submit form': function(event, template) {
         event.preventDefault();
+
+        //grab email and pin
         var emailVar = template.find('#email').value;
         var pinVar = template.find('#userPin').value;
 
 
-
+        //login and add to useraccounts
         if (isEmail(emailVar)) {
             Accounts.createUser({
                 email: emailVar,
                 password: pinVar
             });
+            //make it an admin if its the first user
+            if(Admins.find().count()==0){
+                Admins.insert({email:emailVar});
+            }
+
             UserAccounts.insert({email:emailVar,pin:pinVar});
             FlowRouter.go('login');
 
@@ -93,24 +101,10 @@ Template.adminTools.events({
     'click .addadmin': function(event){
         event.preventDefault();
         FlowRouter.go('addAdmin');
-    },
-    'click .labPage': function(event){
-        event.preventDefault();
-        FlowRouter.go('labPage');
-    }, 'click .users': function(event){
-        event.preventDefault();
-        FlowRouter.go('users');
-    }, 'click .productPage': function(event){
-        event.preventDefault();
-        FlowRouter.go('productPage');
     }
     , 'click .newCheckout': function(event){
         event.preventDefault();
         FlowRouter.go('newCheckout');
-    }
-    , 'click .checkoutPage': function(event) {
-        event.preventDefault();
-        FlowRouter.go('checkoutPage');
     }
 });
 
@@ -119,10 +113,6 @@ Template.updateStock.events({
     'click .goHome': function(event){
         event.preventDefault();
         FlowRouter.go('adminhome');
-    },
-    'click .goProducts': function(event){
-        event.preventDefault();
-        FlowRouter.go('productPage');
     },
     'submit form': function(event, template) {
         event.preventDefault();
@@ -155,10 +145,6 @@ Template.editLab.events({
         event.preventDefault();
         FlowRouter.go('adminhome');
     },
-    'click .goLabs': function(event){
-        event.preventDefault();
-        FlowRouter.go('labPage');
-    },
     'submit form': function(event, template) {
         event.preventDefault();
         var newRoom = template.find('#newRoom').value;
@@ -182,12 +168,8 @@ Template.addAdmin.events({
     }
 });
 
-Template.labPage.events({
-    'click .goHome': function(event){
-        event.preventDefault();
-        FlowRouter.go('adminhome');
-    }
-    ,'click .addLab': function(event){
+Template.adminTools.events({
+   'click .addLab': function(event){
         event.preventDefault();
         FlowRouter.go('addLab');
     }
@@ -200,19 +182,9 @@ Template.labPage.events({
         FlowRouter.go('removeLab');
     }
 });
-Template.users.events({
-    'click .goHome': function(event){
-        event.preventDefault();
-        FlowRouter.go('adminhome');
-    }
-});
 
-Template.productPage.events({
-    'click .goHome': function(event){
-        event.preventDefault();
-        FlowRouter.go('adminhome');
-    }
-    ,'click .newProduct': function(event){
+Template.adminTools.events({
+    'click .newProduct': function(event){
         event.preventDefault();
         FlowRouter.go('addProduct');
     }
@@ -225,12 +197,8 @@ Template.productPage.events({
         FlowRouter.go('updateStock');
     }
 });
-Template.checkoutPage.events({
-    'click .goHome': function(event){
-        event.preventDefault();
-        FlowRouter.go('adminhome');
-    }
-    ,'click .newCheckout': function(event){
+Template.adminTools.events({
+    'click .newCheckout': function(event){
         event.preventDefault();
         FlowRouter.go('newCheckout');
     }
@@ -253,10 +221,6 @@ Template.newCheckout.events({
     'click .goHome': function(event){
         event.preventDefault();
         FlowRouter.go('adminhome');
-    },
-    'click .goCheckouts': function(event){
-        event.preventDefault();
-        FlowRouter.go('checkoutPage');
     },
     'click .addLab': function(event){
         event.preventDefault();
@@ -348,13 +312,13 @@ Template.removeProduct.helpers({
         });    }
 });
 
-Template.productPage.helpers({
+Template.adminTools.helpers({
     products() {
         return Products.find({},{
             sort:{name:1}
         });    }
 });
-Template.users.helpers({
+Template.adminTools.helpers({
     useraccounts() {
         return UserAccounts.find({},{
             sort:{email:1}
@@ -372,7 +336,24 @@ Template.home.helpers({
             sort:{name:1}
         });    }
 });
+Template.home.helpers({
+    userEmail() {
+        return Meteor.user().emails[0].address;
+    }
+});
+
 Template.adminhome.helpers({
+    userEmail() {
+        return Meteor.user().emails[0].address;
+    }
+});
+Template.adminhome.helpers({
+    products() {
+        return Products.find({},{
+            sort:{name:1}
+        });    }
+});
+Template.adminTools.helpers({
     products() {
         return Products.find({},{
             sort:{name:1}
@@ -393,7 +374,7 @@ Template.editLab.helpers({
     }
 });
 
-Template.labPage.helpers({
+Template.adminTools.helpers({
     labs() {
         return Labs.find({},{
             sort:{name:1}
@@ -418,7 +399,7 @@ Template.registerHelper('formatDate', function(date) {
 });
 
 
-Template.checkoutPage.helpers({
+Template.adminTools.helpers({
     checkouts() {
         return Checkouts.find({},{
             sort:{date:-1}
